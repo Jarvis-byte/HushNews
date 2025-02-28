@@ -35,6 +35,7 @@ fun OnBoardingScreen(
         val pagerState = rememberPagerState(initialPage = 0) {
             pages.size
         }
+
         val buttonsState = remember {
             derivedStateOf {
                 when (pagerState.currentPage) {
@@ -53,7 +54,7 @@ fun OnBoardingScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = MediumPadding2)
-                .navigationBarsPadding(),
+                .padding(bottom = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {

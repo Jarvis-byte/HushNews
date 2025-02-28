@@ -18,9 +18,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.loc.newsapp.R
-import com.loc.newsapp.presentation.onBoarding.Page
 import com.loc.newsapp.presentation.dimens.Dimens.MediumPadding1
 import com.loc.newsapp.presentation.dimens.Dimens.MediumPadding2
+import com.loc.newsapp.presentation.onBoarding.Page
 import com.loc.newsapp.ui.theme.NewsAppTheme
 
 
@@ -39,7 +39,6 @@ fun OnBoardingPage(
             contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.height(MediumPadding1))
-
         Text(
             modifier = Modifier.padding(horizontal = MediumPadding2),
             text = page.title,
@@ -52,10 +51,8 @@ fun OnBoardingPage(
             style = MaterialTheme.typography.bodyMedium,
             color = colorResource(id = R.color.text_medium)
         )
-
     }
 }
-
 
 @Preview(showBackground = true)
 @Preview(uiMode = UI_MODE_NIGHT_YES)
@@ -66,7 +63,7 @@ fun OnBoardingPagePreview() {
             page = Page(
                 title = "Lorem Ipsum is simply dummy",
                 description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-                image = R.drawable.onboarding1
+                image = R.drawable.onboarding_ai_1
             )
         )
     }
