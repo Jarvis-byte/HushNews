@@ -18,6 +18,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -27,6 +28,7 @@ import com.loc.newsapp.R
 import com.loc.newsapp.domain.model.Article
 import com.loc.newsapp.presentation.common.ArticlesList
 import com.loc.newsapp.presentation.common.SearchBar
+import com.loc.newsapp.presentation.dimens.Dimens.ExtraSmallPadding2
 import com.loc.newsapp.presentation.dimens.Dimens.MediumPadding1
 import com.loc.newsapp.presentation.navgraph.Route
 
@@ -58,15 +60,14 @@ fun HomeScreen(
             .statusBarsPadding()
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_logo),
+            painter = painterResource(id = R.drawable.logo_2),
             contentDescription = null,
             modifier = Modifier
                 .width(150.dp)
-                .height(30.dp)
-                .padding(horizontal = MediumPadding1)
+                .height(50.dp)
+                .padding(horizontal = ExtraSmallPadding2),
+            contentScale = ContentScale.Crop
         )
-
-        Spacer(modifier = Modifier.height(MediumPadding1))
 
         SearchBar(
             modifier = Modifier
