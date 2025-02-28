@@ -2,6 +2,9 @@ package com.loc.newsapp.presentation.home.componenets
 
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,7 +38,11 @@ import com.loc.newsapp.presentation.dimens.Dimens.ExtraSmallPadding
 import com.loc.newsapp.presentation.dimens.Dimens.ExtraSmallPadding2
 import com.loc.newsapp.presentation.dimens.Dimens.SmallIconSize
 import com.loc.newsapp.ui.theme.NewsAppTheme
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ArticleCard(
     modifier: Modifier = Modifier,
@@ -48,35 +55,53 @@ fun ArticleCard(
         modifier = modifier.clickable { onClick?.invoke() },
 
         ) {
-        AsyncImage(
-            modifier = Modifier
-                .size(ArticleCardSize)
-                .clip(MaterialTheme.shapes.medium),
-            model = ImageRequest.Builder(context).data(article.urlToImage).build(),
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
+
+
+        if (article.urlToImage?.isEmpty() == true) {
+            Image(
+                modifier = Modifier
+                    .size(ArticleCardSize)
+                    .clip(MaterialTheme.shapes.medium),
+                painter = painterResource(id = R.drawable.ic_no_be_image_news),
+                contentDescription = null,
+                contentScale = ContentScale.Crop
+            )
+        } else {
+            AsyncImage(
+                modifier = Modifier
+                    .size(ArticleCardSize)
+                    .clip(MaterialTheme.shapes.medium),
+                model = ImageRequest.Builder(context).data(article.urlToImage).build(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop
+            )
+        }
+
         Column(
             verticalArrangement = Arrangement.SpaceAround,
             modifier = Modifier
                 .padding(horizontal = ExtraSmallPadding)
                 .height(ArticleCardSize)
         ) {
-            Text(
-                text = article.title,
-                style = MaterialTheme.typography.bodyMedium.copy(),
-                color = colorResource(id = R.color.text_title),
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
+            article.title?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.bodyMedium.copy(),
+                    color = colorResource(id = R.color.text_title),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = article.source.name,
-                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                    color = colorResource(id = R.color.body)
-                )
+                article.source?.name?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                        color = colorResource(id = R.color.body)
+                    )
+                }
                 Spacer(modifier = Modifier.width(ExtraSmallPadding2))
                 Icon(
                     painter = painterResource(id = R.drawable.ic_time),
@@ -85,11 +110,23 @@ fun ArticleCard(
                     tint = colorResource(id = R.color.body)
                 )
                 Spacer(modifier = Modifier.width(ExtraSmallPadding))
+
+                val publishAt = article.publishedAt
+                val instant = Instant.parse(publishAt)
+
+                // Convert to IST (Indian Standard Time)
+                val istZone = ZoneId.of("Asia/Kolkata")
+                val istDateTime = instant.atZone(istZone)
+
+                // Format it to "yyyy-MM-dd HH:mm" (without seconds)
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+                val formattedDate = istDateTime.format(formatter)
                 Text(
-                    text = article.publishedAt,
+                    text = formattedDate,
                     style = MaterialTheme.typography.labelSmall,
                     color = colorResource(id = R.color.body)
                 )
+
             }
         }
     }
